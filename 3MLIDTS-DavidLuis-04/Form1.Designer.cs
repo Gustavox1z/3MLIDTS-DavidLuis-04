@@ -210,7 +210,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "Actividad - 04 - Formularios de registros Vr. 0001";
+            this.Text = "Actividad - 04 - Formularios de registros Vr. 0002";
             this.gbGenero.ResumeLayout(false);
             this.gbGenero.PerformLayout();
             this.ResumeLayout(false);
