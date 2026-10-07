@@ -50,6 +50,7 @@ namespace _3MLIDTS_DavidLuis_04
                 MessageBox.Show("Escriba un telefono valido", "Error de validacion", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textboxLocal.BackColor = System.Drawing.Color.IndianRed;
                 //textboxLocal.Clear();
+                //Hola mundo
             }
             else
             {
