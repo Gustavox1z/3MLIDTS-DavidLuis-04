@@ -141,5 +141,17 @@ namespace _3MLIDTS_DavidLuis_04
 
             MessageBox.Show(mensaje, "Registros de usuario", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
         }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            txtNombre.Clear();
+            txtApellido.Clear();
+            txtTelefono.Clear();
+            txtEdad.Clear();
+            txtEstatura.Clear();
+            rbMasculino.Checked = false;
+            rbFemenino.Checked = false;
+            rbOtro.Checked = false;
+        }
     }
 }
