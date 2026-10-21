@@ -9,11 +9,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace _3MLIDTS_DavidLuis_04
 {
     public partial class Form1 : Form
     {
+        string conexion = "Server=local;Port=3306;Database=formulario;Uid=root;Pwd=Davidpro#4659;";
+
         public Form1()
         {
             InitializeComponent();
