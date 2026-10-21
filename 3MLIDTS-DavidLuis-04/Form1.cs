@@ -15,7 +15,7 @@ namespace _3MLIDTS_DavidLuis_04
 {
     public partial class Form1 : Form
     {
-        string conexion = "Server=local;Port=3306;Database=formulario;Uid=root;Pwd=Davidpro#4659;";
+        string conexion = "Server=127.0.0.1;Port=3306;Database=formulario;Uid=root;Pwd=Davidpro#4659;";
 
         public Form1()
         {
@@ -25,6 +25,30 @@ namespace _3MLIDTS_DavidLuis_04
             txtTelefono.Leave += ValidarTelefono;
             txtEdad.TextChanged += ValidarEdad;
             txtEstatura.TextChanged += ValidarEstatura;
+        }
+
+        private void InsertarRegistro(string nombre, string apellido, string telefono, int edad, decimal estatura, string genero)
+        {
+            using (MySqlConnection conection = new MySqlConnection(conexion))
+            {
+                conection.Open();
+
+                string insertQuery = "INSERT INTO registros (nombre, apellidos, telefono, estatura, edad, genero) " +
+                    "VALUES (@nombre, @apellidos, @telefono, @estatura, @edad, @genero)";
+
+                using (MySqlCommand command = new MySqlCommand(insertQuery, conection))
+                {
+                    command.Parameters.AddWithValue("@nombre", nombre);
+                    command.Parameters.AddWithValue("@apellidos", apellido);
+                    command.Parameters.AddWithValue("@telefono", telefono);
+                    command.Parameters.AddWithValue("@estatura", estatura);
+                    command.Parameters.AddWithValue("@edad", edad);
+                    command.Parameters.AddWithValue("@genero", genero);
+
+                    command.ExecuteNonQuery();
+                }
+                conection.Close();
+            }
         }
 
         private void ValidarNombre(object sender, EventArgs e)
@@ -126,23 +150,45 @@ namespace _3MLIDTS_DavidLuis_04
                 genero = "Otro";
             }
 
-            string mensaje = $" Nombres: {nombres}\n Apellidos: {apellidos}\n Telefono: {telefonos}\n Edad: {edad}\n Estatura: {estatura}\n Genero: {genero}";
-
-            ///Ruta de almacenamiento de archivo TXT
-            string rutaFile = "C:\\Users\\Gustavo\\Downloads\\datos.txt";
-            ///Valor de verificacion de archivo existen
-            bool ArchivoExiste = File.Exists(rutaFile);
-            ///Instanciacion de la clase/objeto streamwriter para escribir archivo TXT
-            using (StreamWriter Escritor = new StreamWriter(rutaFile, true))
+            if(EsEnteroValido(edad) && EsDecimalValido(estatura) && EsTelefonoValido(telefonos) && EsTextoValido(nombres) && EsTextoValido(apellidos))
             {
-                if (ArchivoExiste)
-                {
-                    Escritor.WriteLine();
-                }
-                Escritor.WriteLine(mensaje);
-            }
+                string mensaje = $" Nombres: {nombres}\n Apellidos: {apellidos}\n Telefono: {telefonos}\n Edad: {edad}\n Estatura: {estatura}\n Genero: {genero}";
 
-            MessageBox.Show(mensaje, "Registros de usuario", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                ///Ruta de almacenamiento de archivo TXT
+                string rutaFile = "C:\\Users\\Gustavo\\Downloads\\datos.txt";
+                ///Valor de verificacion de archivo existen
+                bool ArchivoExiste = File.Exists(rutaFile);
+                ///Instanciacion de la clase/objeto streamwriter para escribir archivo TXT
+
+                if (ArchivoExiste == false)
+                {
+                    File.WriteAllText(rutaFile, mensaje);
+                }
+                else
+                {
+                    using (StreamWriter writer = new StreamWriter(rutaFile, true))
+                    {
+                        if (ArchivoExiste)
+                        {
+                            writer.WriteLine();
+                            InsertarRegistro(nombres, apellidos, telefonos, int.Parse(edad), decimal.Parse(estatura), genero);
+                            MessageBox.Show("Datos ingresados correctamente");
+                        }
+                        else
+                        {
+                            writer .WriteLine();
+                            InsertarRegistro(nombres, apellidos, telefonos, int.Parse(edad), decimal.Parse(estatura), genero);
+                            MessageBox.Show("Datos ingresados correctamente");
+                        }
+                    }
+                }
+
+                MessageBox.Show("Datos guardados con exito: \n\n" + mensaje, "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Por favor, ingrese datos validos en los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
